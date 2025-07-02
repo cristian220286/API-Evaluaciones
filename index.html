@@ -210,18 +210,47 @@
         DOMElements.moonIcon.classList.toggle('hidden');
         if (!DOMElements.thankYouContent.classList.contains('hidden')) { renderRadarChart(); }
     }
-    async function sendToGoogleSheets() {
-        state.isSubmitting = true;
-        const respuestasResumidas = state.responses.map((r, index) => `P${index + 1}: ${r.answer}`).join(' | ');
-       const finalDataPackage = {
-    nombreCompleto: state.user.nombreCompleto,
-    email: state.user.email,
-    Puntaje_Honestidad: state.scores.honestidad,
-    Puntaje_Servicio: state.scores.servicio,
-    Puntaje_Ambicion: state.scores.ambicion,
-    Puntaje_Pertenencia: state.scores.pertenencia,
-    fullResponses: state.responses // <-- ¡Este es el cambio clave! Enviamos el objeto completo.
-};
+   async function sendToGoogleSheets() {
+    state.isSubmitting = true;
+    const finalDataPackage = {
+        nombreCompleto: state.user.nombreCompleto,
+        email: state.user.email,
+        Puntaje_Honestidad: state.scores.honestidad,
+        Puntaje_Servicio: state.scores.servicio,
+        Puntaje_Ambicion: state.scores.ambicion,
+        Puntaje_Pertenencia: state.scores.pertenencia,
+        fullResponses: state.responses
+    };
+
+    try {
+        // IMPORTANTE: Se eliminó 'mode: no-cors' para poder ver la respuesta real del servidor.
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify(finalDataPackage),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (response.ok) {
+            // El servidor respondió con éxito (ej: 200 OK)
+            console.log('Datos enviados con éxito');
+            DOMElements.sendingSpinner.classList.add('hidden');
+            DOMElements.thankYouContent.classList.remove('hidden');
+            renderRadarChart();
+        } else {
+            // El servidor respondió con un error (ej: 404, 500)
+            throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
+        }
+    } catch (error) {
+        // Error de red o el error que lanzamos arriba
+        console.error('Error en fetch:', error);
+        DOMElements.sendingSpinner.classList.add('hidden');
+        DOMElements.errorMessage.classList.remove('hidden'); // Mostramos el mensaje de error
+    } finally {
+        state.isSubmitting = false;
+    }
+}
         try {
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
