@@ -519,7 +519,6 @@ async function sendToGoogleSheets() {
     try {
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // Cambiado a 'no-cors' para simplificar. No recibiremos respuesta, pero los datos se enviarán.
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalDataPackage)
