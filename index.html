@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evaluación de Perfil de Vendedor</title>
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-   <style>
+    <style>
         body { font-family: 'Inter', sans-serif; }
         .glassmorphism { background: rgba(255, 255, 255, 0.2); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.3); }
         .dark .glassmorphism { background: rgba(31, 41, 55, 0.25); border-color: rgba(255, 255, 255, 0.1); }
@@ -25,22 +23,18 @@
     </style>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-
     <div id="loader" class="fixed inset-0 bg-gray-100 dark:bg-gray-900 flex items-center justify-center z-50">
         <div class="w-16 h-16 border-4 border-t-transparent border-blue-500 rounded-full animate-spin"></div>
     </div>
-
     <main id="app-container" class="min-h-screen w-full flex flex-col items-center justify-center p-4 opacity-0 transition-opacity duration-500">
-        
         <div id="main-card" class="w-full max-w-3xl mx-auto rounded-2xl shadow-2xl overflow-hidden glassmorphism">
             <header class="p-6 border-b border-gray-200/50 dark:border-gray-700/50">
                 <h1 class="text-2xl font-bold text-center text-gray-900 dark:text-white">Evaluación de Perfil de Vendedor</h1>
                 <p class="text-sm text-center text-gray-600 dark:text-gray-400 mt-1">Análisis Psicolaboral</p>
             </header>
-
             <div id="welcome-view" class="p-8 view-transition">
                 <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">Bienvenido/a</h2>
-                <p class="mb-6 text-gray-700 dark:text-gray-300">Esta evaluación busca comprender tu perfil y enfoque ante diversas situaciones laborales. No hay respuestas correctas o incorrectas. Tu honestidad es la clave.</p>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">Esta evaluación busca comprender tu perfil y enfoque ante diversas situaciones laborales. Tu honestidad es la clave.</p>
                 <form id="user-form">
                     <div class="mb-4">
                         <label for="nombreCompleto" class="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">Nombre Completo</label>
@@ -53,7 +47,6 @@
                     <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-lg text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition-all">Comenzar Evaluación</button>
                 </form>
             </div>
-
             <div id="quiz-view" class="p-8 hidden view-transition">
                 <div class="mb-6">
                     <div class="flex justify-between items-center mb-2">
@@ -63,7 +56,6 @@
                         <div id="progress-bar" class="bg-blue-600 h-2.5 rounded-full progress-bar-inner" style="width: 0%"></div>
                     </div>
                 </div>
-
                 <div id="question-container">
                     <p id="q-text" class="font-bold text-lg mb-6 text-gray-900 dark:text-white"></p>
                     <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
@@ -73,7 +65,6 @@
                     <button id="next-btn" class="py-3 px-8 border border-transparent rounded-lg shadow-lg text-lg font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transform hover:scale-105 transition-all">Siguiente</button>
                 </div>
             </div>
-
             <div id="thank-you-view" class="p-8 hidden view-transition text-center">
                  <div id="sending-spinner" class="flex flex-col items-center justify-center">
                     <div class="w-12 h-12 border-4 border-t-transparent border-blue-500 rounded-full animate-spin mb-4"></div>
@@ -82,7 +73,7 @@
                 </div>
                 <div id="thank-you-content" class="hidden">
                     <h2 class="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-3">¡Gracias por completar la evaluación!</h2>
-                    <p class="mb-6 text-gray-700 dark:text-gray-300">Hemos recibido tus respuestas. El equipo de RRHH se pondrá en contacto contigo.</p>
+                    <p class="mb-6 text-gray-700 dark:text-gray-300">Hemos recibido tus respuestas.</p>
                      <p class="text-sm mb-4 font-medium">Este es un resumen de tu perfil actitudinal:</p>
                     <div class="max-w-md mx-auto">
                         <canvas id="radar-chart"></canvas>
@@ -90,476 +81,183 @@
                 </div>
                  <div id="error-message" class="hidden text-center">
                     <p class="font-bold text-red-600 text-lg">¡Oops! Hubo un error.</p>
-                    <p class="text-gray-600 dark:text-gray-300 mt-2">No pudimos enviar tus respuestas. Verifica tu conexión a internet o contacta al reclutador.</p>
+                    <p class="text-gray-600 dark:text-gray-300 mt-2">No pudimos enviar tus respuestas. Verifica tu conexión o contacta al reclutador.</p>
                 </div>
             </div>
         </div>
-        
         <button id="dark-mode-toggle" class="fixed top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
             <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
         </button>
     </main>
-
 <script>
-// ===================================================================================
-// CONFIGURACIÓN PRINCIPAL Y ESTADO DE LA APLICACIÓN
-// ===================================================================================
-
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzM3OO3EPBAzWlOMzAyJ9KgiltXUftwYHBFdUyWSko8nYiHq5Ms9ThM3gr4op6M1Sar/exec'; // ¡Importante! Reemplazaremos esto más adelante.
-const QUESTIONS_TO_ASK = 15; // Número de preguntas a mostrar de la base de datos
-
-const state = {
-    user: {
-        nombreCompleto: '',
-        email: ''
-    },
-    questions: [],
-    currentQuestionIndex: 0,
-    responses: [],
-    scores: {
-        honestidad: 0,
-        servicio: 0,
-        ambicion: 0,
-        pertenencia: 0,
-    },
-    isSubmitting: false
-};
-
-// ===================================================================================
-// BASE DE DATOS DE PREGUNTAS PSICOLÓGICAS (NUEVA)
-// ===================================================================================
-const questionsDB = [
-    // --- Honestidad e Integridad ---
-    {
-        question: "Si un cliente te informa que le cobraste de menos, ¿cuál es tu acción final?",
-        options: [
-            { text: "Agradecerle y corregir el cobro. La honestidad es lo primero.", scores: { honestidad: +2 } },
-            { text: "Dejarlo así para que el cliente se vaya contento.", scores: { honestidad: -1, servicio: +1 } },
-            { text: "Corregir el cobro pero ofrecerle un pequeño descuento por su honestidad.", scores: { honestidad: +2, servicio: +1 } },
-            { text: "Dudar del cliente y revisar las cámaras antes de corregir.", scores: { honestidad: -1 } }
-        ]
-    },
-    {
-        question: "Si ves a un compañero de muchos años cometer un pequeño acto de deshonestidad, ¿qué haces?",
-        options: [
-            { text: "Hablar con él en privado y recordarle los valores de la empresa.", scores: { honestidad: +2, pertenencia: +1 } },
-            { text: "Informar al gerente, ya que las reglas son para todos.", scores: { honestidad: +1 } },
-            { text: "Hacer de cuenta que no viste nada para no generar problemas.", scores: { honestidad: -2 } },
-            { text: "Advertirle que tenga más cuidado la próxima vez.", scores: { honestidad: -1 } }
-        ]
-    },
-    {
-        question: "Si se te atribuye un logro que fue de un colega, ¿cómo reaccionas?",
-        options: [
-            { text: "Agradezco y aclaro inmediatamente quién fue el verdadero responsable.", scores: { honestidad: +2, pertenencia: +1 } },
-            { text: "Acepto el crédito, ya que en un equipo los logros son de todos.", scores: { honestidad: -2 } },
-            { text: "Lo comparto con el colega en privado pero no aclaro nada públicamente.", scores: { honestidad: 0 } },
-            { text: "Agradezco y luego busco una forma de compensar a mi colega.", scores: { honestidad: -1, pertenencia: +1 } }
-        ]
-    },
-
-    // --- Vocación de Servicio y Empatía ---
-    {
-        question: "Un cliente entra a la tienda visiblemente angustiado o de mal humor, ¿cómo lo abordas?",
-        options: [
-            { text: "Con más calma y empatía de lo normal, preguntándole si puedo ayudar en algo.", scores: { servicio: +2 } },
-            { text: "De la misma forma que a cualquier otro cliente.", scores: { servicio: 0 } },
-            { text: "Le doy su espacio y espero a que me llame si necesita algo.", scores: { servicio: +1 } },
-            { text: "Intento atenderlo lo más rápido posible para evitar problemas.", scores: { servicio: -1 } }
-        ]
-    },
-    {
-        question: "¿Cuál es la diferencia para ti entre 'vender' y 'ayudar a alguien a comprar'?",
-        options: [
-            { text: "'Vender' es despachar, 'ayudar a comprar' es entender y solucionar una necesidad.", scores: { servicio: +2, pertenencia: +1 } },
-            { text: "Son esencialmente lo mismo, el objetivo es cerrar la transacción.", scores: { servicio: -2 } },
-            { text: "'Ayudar a comprar' suena mejor, pero al final del día hay que vender.", scores: { servicio: 0 } },
-            { text: "Una se enfoca en el producto, la otra en la experiencia del cliente.", scores: { servicio: +2 } }
-        ]
-    },
-    {
-        question: "Un cliente te cuenta un problema personal no relacionado con la compra. ¿Cuál es tu reacción?",
-        options: [
-            { text: "Escucho con atención, muestro empatía y luego reoriento la conversación a la venta.", scores: { servicio: +2 } },
-            { text: "Me siento incómodo y trato de cortar la conversación educadamente.", scores: { servicio: -1 } },
-            { text: "Le doy un consejo personal si creo que puedo ayudar.", scores: { servicio: 0 } },
-            { text: "Le digo que entiendo, pero que hay otros clientes esperando.", scores: { servicio: -2 } }
-        ]
-    },
-
-    // --- Ambición y Deseo de Crecimiento ---
-    {
-        question: "¿Prefieres ser el mejor vendedor de un equipo que no llega a sus metas o el segundo mejor de un equipo que las supera?",
-        options: [
-            { text: "El segundo mejor en un equipo ganador. El éxito del equipo es mi éxito.", scores: { ambicion: +1, pertenencia: +2 } },
-            { text: "El mejor vendedor. Me impulsa destacar individualmente.", scores: { ambicion: +1, pertenencia: -1 } },
-            { text: "Me es indiferente mientras yo cumpla mi propia meta.", scores: { ambicion: 0 } },
-            { text: "Buscaría que mi equipo ganador me ayude a ser el mejor.", scores: { ambicion: +2, pertenencia: +1 } }
-        ]
-    },
-    {
-        question: "Si tuvieras la oportunidad de formarte, ¿qué elegirías?",
-        options: [
-            { text: "Un área para potenciar mis fortalezas y ser aún mejor en lo que hago.", scores: { ambicion: +1 } },
-            { text: "Un área para mejorar mis debilidades y ser un profesional más completo.", scores: { ambicion: +2 } },
-            { text: "Algo que no tenga que ver con ventas, como finanzas o marketing.", scores: { ambicion: +1, pertenencia: +1 } },
-            { text: "Lo que la empresa considere que es más necesario.", scores: { ambicion: 0, pertenencia: +2 } }
-        ]
-    },
-    {
-        question: "Describe tu carrera ideal en esta empresa en los próximos 5 años.",
-        options: [
-            { text: "Liderando un equipo de ventas y formando a nuevos talentos.", scores: { ambicion: +2, pertenencia: +1 } },
-            { text: "Siendo el vendedor experto con los clientes más importantes.", scores: { ambicion: +2 } },
-            { text: "Habiendo rotado por otras áreas para entender mejor el negocio.", scores: { ambicion: +1, pertenencia: +2 } },
-            { text: "No lo he pensado, me enfoco en el presente.", scores: { ambicion: -2 } }
-        ]
-    },
-
-    // --- Sentido de Pertenencia y "Ownership" ---
-    {
-        question: "Si fueras dueño de la tienda por una semana, ¿qué cambio implementarías?",
-        options: [
-            { text: "Un nuevo sistema para reconocer el esfuerzo del equipo, no solo las ventas.", scores: { pertenencia: +2, servicio: +1 } },
-            { text: "Mejoraría los beneficios para los empleados.", scores: { pertenencia: +1 } },
-            { text: "Una promoción agresiva para liquidar el stock viejo.", scores: { ambicion: +1, pertenencia: +1 } },
-            { text: "Pintaría la fachada o cambiaría la música.", scores: { pertenencia: 0 } }
-        ]
-    },
-    {
-        question: "Cuando la tienda está con poco movimiento de clientes, ¿cuál es tu actitud?",
-        options: [
-            { text: "Reordeno productos, limpio mi zona y pienso en cómo mejorar la exhibición.", scores: { pertenencia: +2, ambicion: +1 } },
-            { text: "Aprovecho para charlar con mis compañeros.", scores: { pertenencia: -1 } },
-            { text: "Reviso mi celular, pero estoy atento por si alguien entra.", scores: { pertenencia: -2 } },
-            { text: "Investigo sobre los productos para poder asesorar mejor.", scores: { pertenencia: +2, servicio: +1 } }
-        ]
-    },
-    {
-        question: "Si la empresa atraviesa un momento difícil y pide un esfuerzo extra (sin compensación inmediata), ¿cuál es tu postura?",
-        options: [
-            { text: "Colaboro. Si a la empresa le va bien, a todos nos irá bien a largo plazo.", scores: { pertenencia: +2, ambicion: +1 } },
-            { text: "Lo hago, pero dejo claro que espero una compensación futura.", scores: { pertenencia: 0, ambicion: +1 } },
-            { text: "Cumplo mi horario. El esfuerzo extra debe ser remunerado.", scores: { pertenencia: -2 } },
-            { text: "Depende del tipo de esfuerzo que se pida.", scores: { pertenencia: +1 } }
-        ]
-    },
-    // Añadimos más preguntas para tener una base de 40.
-    // ... (Se replicaría la estructura para las 28 preguntas restantes, asignando puntuaciones a 'honestidad', 'servicio', 'ambicion' y 'pertenencia'. Para brevedad, se omite aquí la lista completa pero el script final las incluirá)
-    // Ejemplo de una pregunta adicional
-    {
-        question: "Un cliente quiere devolver un producto sin etiqueta, en contra de la política de la tienda. ¿Cómo procedes?",
-        options: [
-            { text: "Aplico la política estrictamente para ser justo con todos los clientes.", scores: { honestidad: +2, pertenencia: +1 } },
-            { text: "Llamo al gerente para que él tome la decisión.", scores: { pertenencia: -1 } },
-            { text: "Ofrezco una solución intermedia, como un cambio por otro producto.", scores: { servicio: +2, honestidad: +1 } },
-            { text: "Hago una excepción para mantener al cliente contento.", scores: { servicio: +2, honestidad: -2 } }
-        ]
-    },
-    {
-        question: "Notas que un proceso de la tienda es ineficiente y podría mejorarse. ¿Qué haces?",
-        options: [
-            { text: "Diseño una propuesta de mejora y se la presento a mi gerente.", scores: { ambicion: +2, pertenencia: +2 } },
-            { text: "Lo comento con mis compañeros para ver qué opinan.", scores: { pertenencia: 0 } },
-            { text: "No hago nada, no es mi responsabilidad cambiar los procesos.", scores: { pertenencia: -2, ambicion: -2 } },
-            { text: "Intento aplicar mi mejora de forma sutil sin comunicarlo.", scores: { pertenencia: +1, honestidad: -1 } }
-        ]
-    }
-    // ... Y así sucesivamente hasta completar las 40 preguntas del psicoanalista.
-    // El código completo en el siguiente bloque incluirá una selección de estas.
-];
-
-
-// ===================================================================================
-// SELECCIÓN DE ELEMENTOS DEL DOM (LA INTERFAZ)
-// ===================================================================================
-
-const DOMElements = {
-    loader: document.getElementById('loader'),
-    appContainer: document.getElementById('app-container'),
-    welcomeView: document.getElementById('welcome-view'),
-    quizView: document.getElementById('quiz-view'),
-    thankYouView: document.getElementById('thank-you-view'),
-    userForm: document.getElementById('user-form'),
-    nombreCompletoInput: document.getElementById('nombreCompleto'),
-    emailInput: document.getElementById('email'),
-    progressBar: document.getElementById('progress-bar'),
-    currentQNumber: document.getElementById('current-q-number'),
-    totalQNumber: document.getElementById('total-q-number'),
-    questionContainer: document.getElementById('question-container'),
-    qText: document.getElementById('q-text'),
-    optionsContainer: document.getElementById('options-container'),
-    nextBtn: document.getElementById('next-btn'),
-    validationError: document.getElementById('validation-error'),
-    darkModeToggle: document.getElementById('dark-mode-toggle'),
-    sunIcon: document.getElementById('sun-icon'),
-    moonIcon: document.getElementById('moon-icon'),
-    sendingSpinner: document.getElementById('sending-spinner'),
-    thankYouContent: document.getElementById('thank-you-content'),
-    errorMessage: document.getElementById('error-message'),
-    radarChartCanvas: document.getElementById('radar-chart')
-};
-
-// ===================================================================================
-// LÓGICA DE LA APLICACIÓN
-// ===================================================================================
-
-function startQuiz() {
-    state.user.nombreCompleto = DOMElements.nombreCompletoInput.value;
-    state.user.email = DOMElements.emailInput.value;
-    
-    state.questions = selectRandomQuestions(questionsDB, QUESTIONS_TO_ASK);
-    
-    DOMElements.totalQNumber.textContent = state.questions.length;
-    
-    transitionView(DOMElements.welcomeView, DOMElements.quizView);
-    renderQuestion();
-}
-
-function selectRandomQuestions(questionArray, num) {
-    const shuffled = [...questionArray].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, Math.min(num, shuffled.length));
-}
-
-function handleOptionSelect(optionBtn, option) {
-    document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
-    optionBtn.classList.add('selected');
-    DOMElements.validationError.classList.add('hidden');
-    
-    const currentQuestion = state.questions[state.currentQuestionIndex];
-
-    state.responses[state.currentQuestionIndex] = {
-        question: currentQuestion.question,
-        answer: option.text,
-        scores: option.scores
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx52VnNnDcw_R-PPKW5e8lOsGSKvLlz7-rAJ8g5SWmOuZnudVGS9Ra9tTyos7un-wLm/exec";
+    const QUESTIONS_TO_ASK = 15;
+    const state = { user: { nombreCompleto: '', email: '' }, questions: [], currentQuestionIndex: 0, responses: [], scores: { honestidad: 0, servicio: 0, ambicion: 0, pertenencia: 0 }, isSubmitting: false };
+    const questionsDB = [
+        { question: "Si un cliente te informa que le cobraste de menos, ¿cuál es tu acción final?", options: [ { text: "Agradecerle y corregir el cobro. La honestidad es lo primero.", scores: { honestidad: 2 } }, { text: "Dejarlo así para que el cliente se vaya contento.", scores: { honestidad: -1, servicio: 1 } }, { text: "Corregir el cobro pero ofrecerle un pequeño descuento por su honestidad.", scores: { honestidad: 2, servicio: 1 } }, { text: "Dudar del cliente y revisar las cámaras antes de corregir.", scores: { honestidad: -1 } } ] },
+        { question: "Si ves a un compañero de muchos años cometer un pequeño acto de deshonestidad, ¿qué haces?", options: [ { text: "Hablar con él en privado y recordarle los valores de la empresa.", scores: { honestidad: 2, pertenencia: 1 } }, { text: "Informar al gerente, ya que las reglas son para todos.", scores: { honestidad: 1 } }, { text: "Hacer de cuenta que no viste nada para no generar problemas.", scores: { honestidad: -2 } }, { text: "Advertirle que tenga más cuidado la próxima vez.", scores: { honestidad: -1 } } ] },
+        { question: "Si se te atribuye un logro que fue de un colega, ¿cómo reaccionas?", options: [ { text: "Agradezco y aclaro inmediatamente quién fue el verdadero responsable.", scores: { honestidad: 2, pertenencia: 1 } }, { text: "Acepto el crédito, ya que en un equipo los logros son de todos.", scores: { honestidad: -2 } }, { text: "Lo comparto con el colega en privado pero no aclaro nada públicamente.", scores: { honestidad: 0 } }, { text: "Agradezco y luego busco una forma de compensar a mi colega.", scores: { honestidad: -1, pertenencia: 1 } } ] },
+        { question: "Un cliente entra a la tienda visiblemente angustiado o de mal humor, ¿cómo lo abordas?", options: [ { text: "Con más calma y empatía de lo normal, preguntándole si puedo ayudar en algo.", scores: { servicio: 2 } }, { text: "De la misma forma que a cualquier otro cliente.", scores: { servicio: 0 } }, { text: "Le doy su espacio y espero a que me llame si necesita algo.", scores: { servicio: 1 } }, { text: "Intento atenderlo lo más rápido posible para evitar problemas.", scores: { servicio: -1 } } ] },
+        { question: "¿Cuál es la diferencia para ti entre 'vender' y 'ayudar a alguien a comprar'?", options: [ { text: "'Vender' es despachar, 'ayudar a comprar' es entender y solucionar una necesidad.", scores: { servicio: 2, pertenencia: 1 } }, { text: "Son esencialmente lo mismo, el objetivo es cerrar la transacción.", scores: { servicio: -2 } }, { text: "'Ayudar a comprar' suena mejor, pero al final del día hay que vender.", scores: { servicio: 0 } }, { text: "Una se enfoca en el producto, la otra en la experiencia del cliente.", scores: { servicio: 2 } } ] },
+        { question: "Un cliente te cuenta un problema personal no relacionado con la compra. ¿Cuál es tu reacción?", options: [ { text: "Escucho con atención, muestro empatía y luego reoriento la conversación a la venta.", scores: { servicio: 2 } }, { text: "Me siento incómodo y trato de cortar la conversación educadamente.", scores: { servicio: -1 } }, { text: "Le doy un consejo personal si creo que puedo ayudar.", scores: { servicio: 0 } }, { text: "Le digo que entiendo, pero que hay otros clientes esperando.", scores: { servicio: -2 } } ] },
+        { question: "¿Prefieres ser el mejor vendedor de un equipo que no llega a sus metas o el segundo mejor de un equipo que las supera?", options: [ { text: "El segundo mejor en un equipo ganador. El éxito del equipo es mi éxito.", scores: { ambicion: 1, pertenencia: 2 } }, { text: "El mejor vendedor. Me impulsa destacar individualmente.", scores: { ambicion: 1, pertenencia: -1 } }, { text: "Me es indiferente mientras yo cumpla mi propia meta.", scores: { ambicion: 0 } }, { text: "Buscaría que mi equipo ganador me ayude a ser el mejor.", scores: { ambicion: 2, pertenencia: 1 } } ] },
+        { question: "Si tuvieras la oportunidad de formarte, ¿qué elegirías?", options: [ { text: "Un área para potenciar mis fortalezas y ser aún mejor en lo que hago.", scores: { ambicion: 1 } }, { text: "Un área para mejorar mis debilidades y ser un profesional más completo.", scores: { ambicion: 2 } }, { text: "Algo que no tenga que ver con ventas, como finanzas o marketing.", scores: { ambicion: 1, pertenencia: 1 } }, { text: "Lo que la empresa considere que es más necesario.", scores: { ambicion: 0, pertenencia: 2 } } ] },
+        { question: "Describe tu carrera ideal en esta empresa en los próximos 5 años.", options: [ { text: "Liderando un equipo de ventas y formando a nuevos talentos.", scores: { ambicion: 2, pertenencia: 1 } }, { text: "Siendo el vendedor experto con los clientes más importantes.", scores: { ambicion: 2 } }, { text: "Habiendo rotado por otras áreas para entender mejor el negocio.", scores: { ambicion: 1, pertenencia: 2 } }, { text: "No lo he pensado, me enfoco en el presente.", scores: { ambicion: -2 } } ] },
+        { question: "Si fueras dueño de la tienda por una semana, ¿qué cambio implementarías?", options: [ { text: "Un nuevo sistema para reconocer el esfuerzo del equipo, no solo las ventas.", scores: { pertenencia: 2, servicio: 1 } }, { text: "Mejoraría los beneficios para los empleados.", scores: { pertenencia: 1 } }, { text: "Una promoción agresiva para liquidar el stock viejo.", scores: { ambicion: 1, pertenencia: 1 } }, { text: "Pintaría la fachada o cambiaría la música.", scores: { pertenencia: 0 } } ] },
+        { question: "Cuando la tienda está con poco movimiento de clientes, ¿cuál es tu actitud?", options: [ { text: "Reordeno productos, limpio mi zona y pienso en cómo mejorar la exhibición.", scores: { pertenencia: 2, ambicion: 1 } }, { text: "Aprovecho para charlar con mis compañeros.", scores: { pertenencia: -1 } }, { text: "Reviso mi celular, pero estoy atento por si alguien entra.", scores: { pertenencia: -2 } }, { text: "Investigo sobre los productos para poder asesorar mejor.", scores: { pertenencia: 2, servicio: 1 } } ] },
+        { question: "Si la empresa atraviesa un momento difícil y pide un esfuerzo extra (sin compensación inmediata), ¿cuál es tu postura?", options: [ { text: "Colaboro. Si a la empresa le va bien, a todos nos irá bien a largo plazo.", scores: { pertenencia: 2, ambicion: 1 } }, { text: "Lo hago, pero dejo claro que espero una compensación futura.", scores: { pertenencia: 0, ambicion: 1 } }, { text: "Cumplo mi horario. El esfuerzo extra debe ser remunerado.", scores: { pertenencia: -2 } }, { text: "Depende del tipo de esfuerzo que se pida.", scores: { pertenencia: +1 } } ] },
+        { question: "Un cliente quiere devolver un producto sin etiqueta, en contra de la política de la tienda. ¿Cómo procedes?", options: [ { text: "Aplico la política estrictamente para ser justo con todos los clientes.", scores: { honestidad: 2, pertenencia: 1 } }, { text: "Llamo al gerente para que él tome la decisión.", scores: { pertenencia: -1 } }, { text: "Ofrezco una solución intermedia, como un cambio por otro producto.", scores: { servicio: 2, honestidad: 1 } }, { text: "Hago una excepción para mantener al cliente contento.", scores: { servicio: 2, honestidad: -2 } } ] },
+        { question: "Notas que un proceso de la tienda es ineficiente y podría mejorarse. ¿Qué haces?", options: [ { text: "Diseño una propuesta de mejora y se la presento a mi gerente.", scores: { ambicion: 2, pertenencia: 2 } }, { text: "Lo comento con mis compañeros para ver qué opinan.", scores: { pertenencia: 0 } }, { text: "No hago nada, no es mi responsabilidad cambiar los procesos.", scores: { pertenencia: -2, ambicion: -2 } }, { text: "Intento aplicar mi mejora de forma sutil sin comunicarlo.", scores: { pertenencia: 1, honestidad: -1 } } ] }
+    ];
+    const DOMElements = {
+        loader: document.getElementById('loader'), appContainer: document.getElementById('app-container'), welcomeView: document.getElementById('welcome-view'), quizView: document.getElementById('quiz-view'),
+        thankYouView: document.getElementById('thank-you-view'), userForm: document.getElementById('user-form'), nombreCompletoInput: document.getElementById('nombreCompleto'), emailInput: document.getElementById('email'),
+        progressBar: document.getElementById('progress-bar'), currentQNumber: document.getElementById('current-q-number'), totalQNumber: document.getElementById('total-q-number'),
+        questionContainer: document.getElementById('question-container'), qText: document.getElementById('q-text'), optionsContainer: document.getElementById('options-container'),
+        nextBtn: document.getElementById('next-btn'), validationError: document.getElementById('validation-error'), darkModeToggle: document.getElementById('dark-mode-toggle'),
+        sunIcon: document.getElementById('sun-icon'), moonIcon: document.getElementById('moon-icon'), sendingSpinner: document.getElementById('sending-spinner'),
+        thankYouContent: document.getElementById('thank-you-content'), errorMessage: document.getElementById('error-message'), radarChartCanvas: document.getElementById('radar-chart')
     };
-}
-
-function handleNextQuestion() {
-    if (!state.responses[state.currentQuestionIndex]) {
-        DOMElements.validationError.classList.remove('hidden');
-        return;
-    }
-
-    if (state.currentQuestionIndex < state.questions.length - 1) {
-        state.currentQuestionIndex++;
+    function startQuiz() {
+        state.user.nombreCompleto = DOMElements.nombreCompletoInput.value;
+        state.user.email = DOMElements.emailInput.value;
+        state.questions = selectRandomQuestions(questionsDB, QUESTIONS_TO_ASK);
+        DOMElements.totalQNumber.textContent = state.questions.length;
+        transitionView(DOMElements.welcomeView, DOMElements.quizView);
         renderQuestion();
-    } else {
-        finishQuiz();
     }
-}
-
-function calculateFinalScores() {
-    // Reseteamos los scores a 0
-    for (const key in state.scores) {
-        state.scores[key] = 0;
+    function selectRandomQuestions(arr, num) { const shuffled = [...arr].sort(() => 0.5 - Math.random()); return shuffled.slice(0, Math.min(num, shuffled.length)); }
+    function handleOptionSelect(optionBtn, option) {
+        document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+        optionBtn.classList.add('selected');
+        DOMElements.validationError.classList.add('hidden');
+        const currentQuestion = state.questions[state.currentQuestionIndex];
+        state.responses[state.currentQuestionIndex] = { question: currentQuestion.question, answer: option.text, scores: option.scores };
     }
-    
-    // Sumamos los puntos de cada respuesta
-    state.responses.forEach(response => {
-        for (const trait in response.scores) {
-            if (state.scores.hasOwnProperty(trait)) {
-                state.scores[trait] += response.scores[trait];
+    function handleNextQuestion() {
+        if (!state.responses[state.currentQuestionIndex]) { DOMElements.validationError.classList.remove('hidden'); return; }
+        if (state.currentQuestionIndex < state.questions.length - 1) { state.currentQuestionIndex++; renderQuestion(); } else { finishQuiz(); }
+    }
+    function calculateFinalScores() {
+        for (const key in state.scores) { state.scores[key] = 0; }
+        state.responses.forEach(response => { for (const trait in response.scores) { if (state.scores.hasOwnProperty(trait)) { state.scores[trait] += response.scores[trait]; } } });
+    }
+    async function finishQuiz() { calculateFinalScores(); transitionView(DOMElements.quizView, DOMElements.thankYouView); await sendToGoogleSheets(); }
+    function renderQuestion() {
+        const question = state.questions[state.currentQuestionIndex];
+        DOMElements.questionContainer.classList.add('fade-slide-exit');
+        setTimeout(() => {
+            DOMElements.qText.textContent = question.question;
+            DOMElements.optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'option-btn p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 text-left bg-white/50 dark:bg-gray-800/50';
+                optionBtn.innerHTML = `<p class="text-gray-800 dark:text-gray-200">${option.text}</p>`;
+                optionBtn.onclick = () => handleOptionSelect(optionBtn, option);
+                DOMElements.optionsContainer.appendChild(optionBtn);
+            });
+            const selectedResponse = state.responses[state.currentQuestionIndex];
+            if (selectedResponse) {
+                const optionIndex = question.options.findIndex(opt => opt.text === selectedResponse.answer);
+                const allOptionBtns = DOMElements.optionsContainer.querySelectorAll('.option-btn');
+                if (allOptionBtns[optionIndex]) { allOptionBtns[optionIndex].classList.add('selected'); }
             }
-        }
-    });
-}
-
-async function finishQuiz() {
-    calculateFinalScores();
-    transitionView(DOMElements.quizView, DOMElements.thankYouView);
-    if (SCRIPT_URL !== 'AQUI_VA_LA_URL_DE_TU_SCRIPT') {
-        await sendToGoogleSheets();
-    } else {
-        // Modo offline para desarrollo si no hay URL
-        console.log("Modo offline. Datos no enviados. Scores:", state.scores);
-        DOMElements.sendingSpinner.classList.add('hidden');
-        DOMElements.thankYouContent.classList.remove('hidden');
-        renderRadarChart();
+            DOMElements.currentQNumber.textContent = state.currentQuestionIndex + 1;
+            DOMElements.progressBar.style.width = `${((state.currentQuestionIndex + 1) / state.questions.length) * 100}%`;
+            DOMElements.nextBtn.textContent = (state.currentQuestionIndex === state.questions.length - 1) ? 'Finalizar y Enviar' : 'Siguiente';
+            DOMElements.questionContainer.classList.remove('fade-slide-exit');
+            DOMElements.questionContainer.classList.add('fade-slide-enter');
+            setTimeout(() => DOMElements.questionContainer.classList.remove('fade-slide-enter'), 400);
+        }, 400);
     }
-}
-
-// ===================================================================================
-// FUNCIONES DE RENDERIZADO (ACTUALIZACIÓN DE LA INTERFAZ)
-// ===================================================================================
-
-function renderQuestion() {
-    const question = state.questions[state.currentQuestionIndex];
-    DOMElements.questionContainer.classList.add('fade-slide-exit');
-    
-    setTimeout(() => {
-        DOMElements.qText.textContent = question.question;
-        
-        DOMElements.optionsContainer.innerHTML = '';
-        question.options.forEach(option => {
-            const optionBtn = document.createElement('button');
-            optionBtn.className = 'option-btn p-4 rounded-lg border-2 border-gray-300 dark:border-gray-600 text-left bg-white/50 dark:bg-gray-800/50';
-            optionBtn.innerHTML = `<p class="text-gray-800 dark:text-gray-200">${option.text}</p>`;
-            optionBtn.onclick = () => handleOptionSelect(optionBtn, option);
-            DOMElements.optionsContainer.appendChild(optionBtn);
-        });
-
-        const selectedResponse = state.responses[state.currentQuestionIndex];
-        if (selectedResponse) {
-            const allOptionBtns = DOMElements.optionsContainer.querySelectorAll('.option-btn');
-            const optionIndex = question.options.findIndex(opt => opt.text === selectedResponse.answer);
-            if(allOptionBtns[optionIndex]) {
-                allOptionBtns[optionIndex].classList.add('selected');
-            }
-        }
-
-        DOMElements.currentQNumber.textContent = state.currentQuestionIndex + 1;
-        const progress = ((state.currentQuestionIndex + 1) / state.questions.length) * 100;
-        DOMElements.progressBar.style.width = `${progress}%`;
-        
-        DOMElements.nextBtn.textContent = (state.currentQuestionIndex === state.questions.length - 1) ? 'Finalizar y Enviar' : 'Siguiente';
-
-        DOMElements.questionContainer.classList.remove('fade-slide-exit');
-        DOMElements.questionContainer.classList.add('fade-slide-enter');
-        setTimeout(() => DOMElements.questionContainer.classList.remove('fade-slide-enter'), 400);
-
-    }, 400);
-}
-
-function renderRadarChart() {
-    const labels = [ 'Honestidad', 'Vocación de Servicio', 'Ambición y Crecimiento', 'Sentido de Pertenencia' ];
-    const data = Object.values(state.scores);
-
-    const maxPossibleScore = QUESTIONS_TO_ASK * 2;
-    const minPossibleScore = QUESTIONS_TO_ASK * -2;
-    const normalizedData = data.map(score => 10 * (score - minPossibleScore) / (maxPossibleScore - minPossibleScore));
-
-    if (window.myRadarChart) {
-        window.myRadarChart.destroy();
-    }
-
-    window.myRadarChart = new Chart(DOMElements.radarChartCanvas.getContext('2d'), {
-        type: 'radar',
-        data: {
-            labels,
-            datasets: [{
-                label: 'Perfil Actitudinal',
-                data: normalizedData,
-                fill: true,
-                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                borderColor: 'rgba(59, 130, 246, 1)',
-                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                pointBorderColor: '#fff',
-            }]
-        },
-        options: {
-            scales: {
-                r: {
-                    angleLines: { color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)' },
-                    grid: { color: document.documentElement.classList.contains('dark') ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)' },
-                    pointLabels: { font: { size: 12 }, color: document.documentElement.classList.contains('dark') ? '#cbd5e1' : '#475569' },
-                    ticks: { display: false, maxTicksLimit: 5, min: 0, max: 10 }
-                }
+    function renderRadarChart() {
+        const labels = ['Honestidad', 'Servicio', 'Ambición', 'Pertenencia'];
+        const data = Object.values(state.scores);
+        const maxScore = QUESTIONS_TO_ASK * 2, minScore = QUESTIONS_TO_ASK * -2;
+        const normalizedData = data.map(score => 10 * (score - minScore) / (maxScore - minScore));
+        if (window.myRadarChart) { window.myRadarChart.destroy(); }
+        const isDark = document.documentElement.classList.contains('dark');
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)';
+        const labelColor = isDark ? '#cbd5e1' : '#475569';
+        window.myRadarChart = new Chart(DOMElements.radarChartCanvas.getContext('2d'), {
+            type: 'radar',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Perfil Actitudinal', data: normalizedData, fill: true, backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)', pointBackgroundColor: 'rgba(59, 130, 246, 1)', pointBorderColor: '#fff',
+                }]
             },
-            plugins: { legend: { display: false } }
-        }
-    });
-}
-
-function transitionView(from, to) {
-    from.classList.add('fade-slide-exit');
-    setTimeout(() => {
-        from.classList.add('hidden');
-        from.classList.remove('fade-slide-exit');
-        to.classList.remove('hidden');
-        to.classList.add('fade-slide-enter');
-        setTimeout(() => to.classList.remove('fade-slide-enter'), 10);
-    }, 400);
-}
-
-function toggleDarkMode() {
-    const html = document.documentElement;
-    html.classList.toggle('dark');
-    localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-    DOMElements.sunIcon.classList.toggle('hidden');
-    DOMElements.moonIcon.classList.toggle('hidden');
-    
-    if (!DOMElements.thankYouContent.classList.contains('hidden')) {
-        renderRadarChart();
-    }
-}
-
-// ===================================================================================
-// EVENT LISTENERS
-// ===================================================================================
-
-DOMElements.userForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    startQuiz();
-});
-
-DOMElements.nextBtn.addEventListener('click', handleNextQuestion);
-DOMElements.darkModeToggle.addEventListener('click', toggleDarkMode);
-
-// ===================================================================================
-// INTEGRACIÓN CON API DE GOOGLE
-// ===================================================================================
-
-async function sendToGoogleSheets() {
-    state.isSubmitting = true;
-    
-    // Simplificamos las respuestas para no exceder el límite de la URL
-    const respuestasResumidas = state.responses.map((r, index) => 
-        `P${index + 1}: ${r.answer}`).join(' | ');
-
-    const finalDataPackage = {
-        nombreCompleto: state.user.nombreCompleto,
-        email: state.user.email,
-        ...state.scores, // Desglosamos los scores
-        respuestas: respuestasResumidas,
-        fecha: new Date().toISOString()
-    };
-    
-    try {
-        const response = await fetch(SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors', // Cambiado a 'no-cors' para simplificar. No recibiremos respuesta, pero los datos se enviarán.
-            cache: 'no-cache',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(finalDataPackage)
+            options: { scales: { r: { angleLines: { color: gridColor }, grid: { color: gridColor }, pointLabels: { font: { size: 12 }, color: labelColor }, ticks: { display: false, maxTicksLimit: 5, min: 0, max: 10 } } }, plugins: { legend: { display: false } } }
         });
-
-        // Con no-cors, no podemos verificar el response.ok, así que asumimos éxito.
-        DOMElements.sendingSpinner.classList.add('hidden');
-        DOMElements.thankYouContent.classList.remove('hidden');
-        renderRadarChart();
-
-    } catch (error) {
-        console.error('Error al intentar enviar los datos:', error);
-        DOMElements.sendingSpinner.classList.add('hidden');
-        DOMElements.errorMessage.classList.remove('hidden');
-    } finally {
-        state.isSubmitting = false;
     }
-}
-
-
-// ===================================================================================
-// INICIALIZACIÓN DE LA APLICACIÓN
-// ===================================================================================
-
-window.addEventListener('load', () => {
-    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-        DOMElements.sunIcon.classList.add('hidden');
-        DOMElements.moonIcon.classList.remove('hidden');
-    } else {
-        document.documentElement.classList.remove('dark');
+    function transitionView(from, to) {
+        from.classList.add('fade-slide-exit');
+        setTimeout(() => {
+            from.classList.add('hidden');
+            from.classList.remove('fade-slide-exit');
+            to.classList.remove('hidden');
+            to.classList.add('fade-slide-enter');
+            setTimeout(() => to.classList.remove('fade-slide-enter'), 10);
+        }, 400);
     }
-    
-    setTimeout(() => {
-        DOMElements.loader.style.opacity = '0';
-        DOMElements.appContainer.style.opacity = '1';
-        setTimeout(() => DOMElements.loader.style.display = 'none', 500);
-    }, 500); 
-});
-
+    function toggleDarkMode() {
+        const html = document.documentElement;
+        html.classList.toggle('dark');
+        localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        DOMElements.sunIcon.classList.toggle('hidden');
+        DOMElements.moonIcon.classList.toggle('hidden');
+        if (!DOMElements.thankYouContent.classList.contains('hidden')) { renderRadarChart(); }
+    }
+    async function sendToGoogleSheets() {
+        state.isSubmitting = true;
+        const respuestasResumidas = state.responses.map((r, index) => `P${index + 1}: ${r.answer}`).join(' | ');
+       const finalDataPackage = {
+    nombreCompleto: state.user.nombreCompleto,
+    email: state.user.email,
+    Puntaje_Honestidad: state.scores.honestidad,
+    Puntaje_Servicio: state.scores.servicio,
+    Puntaje_Ambicion: state.scores.ambicion,
+    Puntaje_Pertenencia: state.scores.pertenencia,
+    fullResponses: state.responses // <-- ¡Este es el cambio clave! Enviamos el objeto completo.
+};
+        try {
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // Usar text/plain simplifica la recepción en Apps Script
+                body: JSON.stringify(finalDataPackage)
+            });
+            DOMElements.sendingSpinner.classList.add('hidden');
+            DOMElements.thankYouContent.classList.remove('hidden');
+            renderRadarChart();
+        } catch (error) {
+            console.error('Error en fetch:', error);
+            DOMElements.sendingSpinner.classList.add('hidden');
+            DOMElements.errorMessage.classList.remove('hidden');
+        } finally {
+            state.isSubmitting = false;
+        }
+    }
+    DOMElements.userForm.addEventListener('submit', (e) => { e.preventDefault(); startQuiz(); });
+    DOMElements.nextBtn.addEventListener('click', handleNextQuestion);
+    DOMElements.darkModeToggle.addEventListener('click', toggleDarkMode);
+    window.addEventListener('load', () => {
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            DOMElements.sunIcon.classList.add('hidden');
+            DOMElements.moonIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        setTimeout(() => {
+            DOMElements.loader.style.opacity = '0';
+            DOMElements.appContainer.style.opacity = '1';
+            setTimeout(() => DOMElements.loader.style.display = 'none', 500);
+        }, 500);
+    });
 </script>
 </body>
 </html>
