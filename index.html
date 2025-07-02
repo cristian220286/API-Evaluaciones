@@ -210,7 +210,7 @@
         DOMElements.moonIcon.classList.toggle('hidden');
         if (!DOMElements.thankYouContent.classList.contains('hidden')) { renderRadarChart(); }
     }
-   async function sendToGoogleSheets() {
+async function sendToGoogleSheets() { // <-- La palabra 'async' aquí es la clave
     state.isSubmitting = true;
     const finalDataPackage = {
         nombreCompleto: state.user.nombreCompleto,
@@ -223,8 +223,7 @@
     };
 
     try {
-        // IMPORTANTE: Se eliminó 'mode: no-cors' para poder ver la respuesta real del servidor.
-        const response = await fetch(SCRIPT_URL, {
+        const response = await fetch(SCRIPT_URL, { // 'await' solo funciona gracias al 'async' de arriba
             method: 'POST',
             body: JSON.stringify(finalDataPackage),
             headers: {
@@ -233,20 +232,17 @@
         });
 
         if (response.ok) {
-            // El servidor respondió con éxito (ej: 200 OK)
             console.log('Datos enviados con éxito');
             DOMElements.sendingSpinner.classList.add('hidden');
             DOMElements.thankYouContent.classList.remove('hidden');
             renderRadarChart();
         } else {
-            // El servidor respondió con un error (ej: 404, 500)
             throw new Error(`Error del servidor: ${response.status} ${response.statusText}`);
         }
     } catch (error) {
-        // Error de red o el error que lanzamos arriba
         console.error('Error en fetch:', error);
         DOMElements.sendingSpinner.classList.add('hidden');
-        DOMElements.errorMessage.classList.remove('hidden'); // Mostramos el mensaje de error
+        DOMElements.errorMessage.classList.remove('hidden');
     } finally {
         state.isSubmitting = false;
     }
