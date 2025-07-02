@@ -106,7 +106,7 @@
 // CONFIGURACIÓN PRINCIPAL Y ESTADO DE LA APLICACIÓN
 // ===================================================================================
 
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwEi3D75Sk52wuXik9skdphDywvAUYLtAmKYmfPohc5AstrpPxIls8tcD0Oi-cCoRVs/exec'; // ¡Importante! Reemplazaremos esto más adelante.
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzM3OO3EPBAzWlOMzAyJ9KgiltXUftwYHBFdUyWSko8nYiHq5Ms9ThM3gr4op6M1Sar/exec'; // ¡Importante! Reemplazaremos esto más adelante.
 const QUESTIONS_TO_ASK = 15; // Número de preguntas a mostrar de la base de datos
 
 const state = {
@@ -519,6 +519,7 @@ async function sendToGoogleSheets() {
     try {
         const response = await fetch(SCRIPT_URL, {
             method: 'POST',
+            mode: 'no-cors', // Cambiado a 'no-cors' para simplificar. No recibiremos respuesta, pero los datos se enviarán.
             cache: 'no-cache',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(finalDataPackage)
